@@ -35,3 +35,20 @@ logger.info("Your new text is: %s" % cleaned_text)
 words = cleaned_text.split(" ")
 
 print(words)
+
+word_count = {"Lorem": 1}
+
+# for each word, check if it's in the word_count dictionary
+for word in words:
+    if word in word_count:
+        # If it is, increment by 1
+        logger.debug("%s is in word_count %s times" % (word, word_count[word]))
+        word_count[word] += 1
+        logger.debug("%s is in word_count %s times" % (word, word_count[word]))
+
+    else:
+        logger.debug("%s wasn't in here yet." % word)
+        word_count[word] = 1
+        logger.debug("%s is in word_count %s times" % (word, word_count[word]))
+
+print(word_count)
