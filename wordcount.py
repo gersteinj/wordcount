@@ -1,54 +1,62 @@
 import logging
 import string
 
-document = """
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-"""
-
-cleaned_text = ""
-
-logging.basicConfig(level = logging.DEBUG)
+logging.basicConfig(level = logging.INFO)
 logger = logging.getLogger(__name__)
 
-logger.info("Reading document now")
+def clean(raw_string):
+    """Takes in a string and returns a string with all non-alphanumeric and non-space characters stripped out"""
+    cleaned_text = ""
+    # Read each character in the text
+    for char in raw_string:
+        # Check to see if the character is alphanumeric or a space. If so, add to cleaned text
+        if char in string.ascii_letters:
+            logger.debug("%s is a letter" % char)
+            cleaned_text += char
+        elif char in string.digits:
+            logger.debug("%s is a number" % char)
+            cleaned_text += char
+        elif char == ' ':
+            logger.debug('space')
+            cleaned_text += char
+        else:
+            logger.debug('Don\'t bother with that one')
 
-# Read each character in the text
-for char in document:
-    # logger.debug(char)
+    logger.info("Your result is: %s \n" % cleaned_text)
 
-    # Check to see if the character is alphanumeric; if so, add to cleaned_text 
-    if char in string.ascii_letters or char in string.digits:
-        logger.debug("%s is alphanumeric" % char)
-        cleaned_text += char
+    return cleaned_text
 
-    # If character isn't alphanumeric and is space, add to cleaned_text
-    elif char == " ":
-        logger.debug("But it is a space")
-        cleaned_text += char
-    # If character isn't alphanumeric and isn't space, don't add to cleaned_text
-    # TODO: add abilitiy to check for contractions
-    else:
-        logger.debug("KILL IT!")
 
-logger.info("Your new text is: %s" % cleaned_text)
+def split_words(clean_string):
+    """Takes a multi-word string and returns a list containing each word"""
+    words = clean_string.split(" ")
+    logger.info("Your words are: %s \n" % words)
+    return words
 
-words = cleaned_text.split(" ")
+def count_words(word_list):
+    """Takes in a list of words and returns a dictionary of word counts"""
+    word_count = {}
+    for word in word_list:
+        # If the word has already been added to the dictionary, increment it
+        if word in word_count:
+            logger.debug("%s is in word_count %s times" % (word, word_count[word]))
+            word_count[word] += 1
+            logger.debug("%s is in word_count %s times" % (word, word_count[word]))
+        # Otherwise, add it with a count of 1
+        else:
+            logger.debug("%s wasn't in here yet." % word)
+            word_count[word] = 1
+            logger.debug("%s is in word_count %s times" % (word, word_count[word]))
+    logger.info("Here are your word counts: %s \n" % word_count)
+    return word_count
 
-print(words)
 
-word_count = {"Lorem": 1}
+def wordcount(raw_string):
+    return count_words(split_words(clean(raw_string)))
 
-# for each word, check if it's in the word_count dictionary
-for word in words:
-    if word in word_count:
-        # If it is, increment by 1
-        logger.debug("%s is in word_count %s times" % (word, word_count[word]))
-        word_count[word] += 1
-        logger.debug("%s is in word_count %s times" % (word, word_count[word]))
 
-    else:
-        logger.debug("%s wasn't in here yet." % word)
-        word_count[word] = 1
-        logger.debug("%s is in word_count %s times" % (word, word_count[word]))
-
-print(word_count)
+if __name__ == "__main__":
+    document = """
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+"""
+    counted_words = count_words(split_words(clean(document)))
