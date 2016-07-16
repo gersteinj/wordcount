@@ -238,15 +238,8 @@ malcomx_count = wordcount.wordcount(malcomx_text)
 # print(mlk_count)
 # print(malcomx_count)
 
-def unique_words(source, comparison):
-	uniques = []
-	for key in source:
-		if key not in comparison:
-			uniques.append(key)
-	return uniques
-
-mlk_unique = unique_words(mlk_count, malcomx_count)
-malcolmx_unique = unique_words(malcomx_count, mlk_count)
+mlk_unique = wordcount.unique_words(mlk_count, malcomx_count)
+malcolmx_unique = wordcount.unique_words(malcomx_count, mlk_count)
 
 print("MLK: ", mlk_unique, '\n\n\n')
 print("Malcolm X: ", malcolmx_unique, '\n\n\n')
