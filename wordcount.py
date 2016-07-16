@@ -1,11 +1,12 @@
 import logging
 import string
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level = logging.WARNING)
 logger = logging.getLogger(__name__)
 
 def clean(raw_string):
     """Takes in a string and returns a string with all non-alphanumeric and non-space characters stripped out"""
+    raw_string = raw_string.lower()
     cleaned_text = ""
     # Read each character in the text
     for char in raw_string:
