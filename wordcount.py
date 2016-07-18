@@ -1,5 +1,6 @@
 import logging
 import string
+import csv
 
 logging.basicConfig(level = logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -69,6 +70,16 @@ def unique_words(source, comparison):
             uniques.append(key)
     return uniques
 
+
+def create_csv(wordcount_dic, filename):
+    """Creates a CSV file from a dictionary of counted words"""
+    with open(filename + '.csv', 'w', newline='') as csvfile:
+        fieldnames = ['word', 'occurences']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
+        writer.writeheader()
+        for key in wordcount_dic:
+            writer.writerow({'word': key, 'occurences': wordcount_dic[key]})
+    csvfile.close()
 
 if __name__ == "__main__":
     document = """
@@ -167,3 +178,5 @@ And when this happens, and when we allow freedom ring, when we let it ring from 
                 Thank God Almighty, we are free at last!
 """
     counted_words = count_words(split_words(clean(document)))
+    print(counted_words)
+   
